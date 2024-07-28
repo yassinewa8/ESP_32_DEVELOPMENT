@@ -1,18 +1,9 @@
 #include <Wire.h>
+#include <Arduino.h>
+
 
 #define MPU9250_ADDRESS 0x68
 #define AK8963_ADDRESS 0x0C
-
-void setup() {
-  Serial.begin(115200);
-  Wire.begin();
-  initializeMPU9250();
-}
-
-void loop() {
-  readMPU9250Data();
-  delay(100); // Adjust the delay as needed
-}
 
 void initializeMPU9250() {
   // Wake up the MPU9250
@@ -126,7 +117,17 @@ int GET_I2C_ADDRESS(){
     Serial.println("No I2C devices found");
   }
 
-   
+}
 
+
+void setup() {
+  Serial.begin(115200);
+  Wire.begin();
+  initializeMPU9250();
+}
+
+void loop() {
+  readMPU9250Data();
+  delay(100); // Adjust the delay as needed
 }
 
