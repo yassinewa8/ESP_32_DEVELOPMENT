@@ -1,0 +1,95 @@
+#####################################################################################################################################
+## Transmitter
+#####################################################################################################################################
+Including Libraries:
+
+#include <esp_now.h>: Includes the ESP-NOW library for wireless communication.
+#include <WiFi.h>: Includes the Wi-Fi library, necessary to set the ESP32 into station mode.
+MAC Address Setup:
+
+uint8_t receiverAddress[] = {0x10, 0x06, 0x1C, 0x82, 0xCD, 0xC4};: Stores the MAC address of the receiver ESP32. The transmitter sends data to this specific MAC address.
+Message Structure:
+
+struct struct_message: Defines a structure for the message to be sent, which in this case is a character array of 200 bytes.
+Callback Function - onSent():
+
+This function is called after each message is sent to check whether the message was delivered successfully.
+setup() Function:
+
+Initializes the Serial Monitor.
+Sets the ESP32 as a Wi-Fi station (WiFi.mode(WIFI_STA);).
+Initializes ESP-NOW (esp_now_init()).
+Registers the onSent callback function for transmission status.
+Configures the peer (receiver) by adding its MAC address and sets the communication channel.
+Adds the peer to the ESP-NOW peer list with esp_now_add_peer().
+loop() Function:
+
+Waits for the user to input text.
+Converts the input text to a character array.
+Sends the text via ESP-NOW to the receiver's MAC address.
+Prints the result of the transmission (success or failure).
+
+#####################################################################################################################################
+## Receiver
+#####################################################################################################################################
+Including Libraries:
+
+#include <esp_now.h>: Includes the ESP-NOW library for wireless communication.
+#include <WiFi.h>: Includes the Wi-Fi library, necessary to set the ESP32 into station mode.
+Message Structure:
+
+struct struct_message: Defines a structure for the message that will be received, which is a character array of 200 bytes.
+Callback Function - onReceive():
+
+This function is triggered whenever a message is received via ESP-NOW.
+It prints the MAC address of the sender and the received message.
+Function to Print Own MAC Address - printOwnMACAddress():
+
+This function retrieves and prints the MAC address of the receiver ESP32 when it starts up.
+setup() Function:
+
+Initializes the Serial Monitor.
+Sets the ESP32 as a Wi-Fi station (WiFi.mode(WIFI_STA);).
+Prints the ESP32's own MAC address to the Serial Monitor.
+Initializes ESP-NOW (esp_now_init()).
+Registers the onReceive callback function to handle incoming messages.
+loop() Function:
+
+This function remains empty because the receiver is simply waiting for messages to arrive. The onReceive function handles any received data.
+
+
+#####################################################################################################################################
+## how it works
+#####################################################################################################################################
+Transmitter:
+
+The transmitter ESP32 reads input text from the user via the Serial Monitor. It then sends this text to the receiver ESP32 using the ESP-NOW protocol.
+Receiver:
+
+The receiver ESP32 listens for incoming ESP-NOW messages. When it receives a message, it prints the sender's MAC address and the content of the message to the Serial Monitor.
+
+#####################################################################################################################################
+## Practical application
+#####################################################################################################################################
+IoT Devices: Use these modules to set up a low-power, low-latency communication system between ESP32 devices in an IoT network without needing a central Wi-Fi network.
+Remote Sensors: Ideal for sending sensor data from one ESP32 (sensor node) to another ESP32 (central hub) in real-time.
+Home Automation: Implement real-time communication between devices in a home automation setup, such as remote control of lights, alarms, or other systems.
+
+#####################################################################################################################################
+## Trouble shooting 
+#####################################################################################################################################
+
+Failed to Add Peer: Ensure that the correct MAC address is used and that the Wi-Fi mode is properly initialized.
+No Response on Receiver: Double-check the MAC address and ensure the receiver's onReceive function is properly registered and ready to handle incoming data.
+
+
+
+
+
+
+
+
+
+
+
+
